@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "483019541618",
+    "project_id": "fir-web-5fa89",
+    "storage_bucket": "fir-web-5fa89.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483019541618:android:e7f15f8e7f095b9b18c6eb",
+        "android_client_info": {
+          "package_name": "com.example.jgragia.androidbiometria"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "483019541618-r2qdvd8j2uvk10e2ucla057r6im68c9n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGhizuBgNzCq_pvdnOTPNcmIBENyo48dU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "483019541618-r2qdvd8j2uvk10e2ucla057r6im68c9n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

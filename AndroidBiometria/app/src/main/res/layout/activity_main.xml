@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/ultimaMedicionCO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Aún no hay valores"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/ultimaMedicionCO2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/ultimaMedicionO3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Aún no hay valores"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/ultimaMedicionTemperatura"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/ultimaMedicionCO"
+        app:layout_constraintTop_toBottomOf="@+id/CO" />
+
+    <TextView
+        android:id="@+id/ultimaMedicionTemperatura"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Aún no hay valores"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/ultimaMedicionCO2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ultimaMedicionO3"
+        app:layout_constraintTop_toBottomOf="@+id/CO2" />
+
+    <TextView
+        android:id="@+id/ultimaMedicionCO2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Aún no hay valores"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ultimaMedicionCO"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/CO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="CO"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/ultimaMedicionCO"
+        app:layout_constraintStart_toStartOf="@+id/ultimaMedicionCO"
+        app:layout_constraintTop_toBottomOf="@+id/ultimaMedicionCO" />
+
+    <TextView
+        android:id="@+id/CO2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="CO2"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/ultimaMedicionCO2"
+        app:layout_constraintStart_toStartOf="@+id/ultimaMedicionCO2"
+        app:layout_constraintTop_toBottomOf="@+id/ultimaMedicionCO2" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Los valores se muestran bajo"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/arrancar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:padding="10dp"
+        android:text="Arrancar el servicio"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/detener"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/detener"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:padding="10dp"
+        android:text="Detener el servicio"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/arrancar" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Buscando dispositivo Jorge Grau Giannakakis, GTI-3A "
+        app:layout_constraintBottom_toTopOf="@+id/arrancar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/O3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="O3"
+        app:layout_constraintEnd_toEndOf="@+id/ultimaMedicionO3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/ultimaMedicionO3"
+        app:layout_constraintTop_toBottomOf="@+id/ultimaMedicionO3" />
+
+    <TextView
+        android:id="@+id/Temperatura"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Temperatura"
+        app:layout_constraintEnd_toEndOf="@+id/ultimaMedicionTemperatura"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/ultimaMedicionTemperatura"
+        app:layout_constraintTop_toBottomOf="@+id/ultimaMedicionTemperatura" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
