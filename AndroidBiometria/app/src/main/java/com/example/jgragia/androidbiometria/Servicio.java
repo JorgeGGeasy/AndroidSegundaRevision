@@ -27,7 +27,7 @@ public class Servicio  extends IntentService {
 
     // ---------------------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------
-    private static final String ETIQUETA_LOG = "Test";
+    private static final String ETIQUETA_LOG = "Dispositivo";
 
     private long tiempoDeEspera = 10000;
 
@@ -142,6 +142,9 @@ public class Servicio  extends IntentService {
         this.callbackDelEscaneo = new ScanCallback() {
             @Override
             public void onScanResult( int callbackType, ScanResult resultado ) {
+
+                mostrarInformacionDispositivoBTLE( resultado );
+
                 super.onScanResult(callbackType, resultado);
                 Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult() ");
 
@@ -252,6 +255,45 @@ public class Servicio  extends IntentService {
         }
         this.elEscanner.stopScan( this.callbackDelEscaneo );
         this.callbackDelEscaneo = null;
+
+    } // ()
+
+    private void mostrarInformacionDispositivoBTLE( ScanResult resultado ) {
+
+        BluetoothDevice bluetoothDevice = resultado.getDevice();
+        byte[] bytes = resultado.getScanRecord().getBytes();
+        int rssi = resultado.getRssi();
+
+        Log.d(ETIQUETA_LOG, " ****************************************************");
+        Log.d(ETIQUETA_LOG, " ****** DISPOSITIVO DETECTADO BTLE ****************** ");
+        Log.d(ETIQUETA_LOG, " ****************************************************");
+        Log.d(ETIQUETA_LOG, " nombre = " + bluetoothDevice.getName());
+        Log.d(ETIQUETA_LOG, " toString = " + bluetoothDevice.toString());
+
+        Log.d(ETIQUETA_LOG, " dirección = " + bluetoothDevice.getAddress());
+        Log.d(ETIQUETA_LOG, " rssi = " + rssi );
+
+        Log.d(ETIQUETA_LOG, " bytes = " + new String(bytes));
+        Log.d(ETIQUETA_LOG, " bytes (" + bytes.length + ") = " + Utilidades.bytesToHexString(bytes));
+
+        TramaIBeacon tib = new TramaIBeacon(bytes);
+
+        Log.d(ETIQUETA_LOG, " ----------------------------------------------------");
+        Log.d(ETIQUETA_LOG, " prefijo  = " + Utilidades.bytesToHexString(tib.getPrefijo()));
+        Log.d(ETIQUETA_LOG, "          advFlags = " + Utilidades.bytesToHexString(tib.getAdvFlags()));
+        Log.d(ETIQUETA_LOG, "          advHeader = " + Utilidades.bytesToHexString(tib.getAdvHeader()));
+        Log.d(ETIQUETA_LOG, "          companyID = " + Utilidades.bytesToHexString(tib.getCompanyID()));
+        Log.d(ETIQUETA_LOG, "          iBeacon type = " + Integer.toHexString(tib.getiBeaconType()));
+        Log.d(ETIQUETA_LOG, "          iBeacon length 0x = " + Integer.toHexString(tib.getiBeaconLength()) + " ( "
+                + tib.getiBeaconLength() + " ) ");
+        Log.d(ETIQUETA_LOG, " uuid  = " + Utilidades.bytesToHexString(tib.getUUID()));
+        Log.d(ETIQUETA_LOG, " uuid  = " + Utilidades.bytesToString(tib.getUUID()));
+        Log.d(ETIQUETA_LOG, " major  = " + Utilidades.bytesToHexString(tib.getMajor()) + "( "
+                + Utilidades.bytesToInt(tib.getMajor()) + " ) ");
+        Log.d(ETIQUETA_LOG, " minor  = " + Utilidades.bytesToHexString(tib.getMinor()) + "( "
+                + Utilidades.bytesToInt(tib.getMinor()) + " ) ");
+        Log.d(ETIQUETA_LOG, " txPower  = " + Integer.toHexString(tib.getTxPower()) + " ( " + tib.getTxPower() + " )");
+        Log.d(ETIQUETA_LOG, " ****************************************************");
 
     } // ()
 } // class
