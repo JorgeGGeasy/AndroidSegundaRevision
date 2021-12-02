@@ -1,6 +1,10 @@
 package com.example.jgragia.androidbiometria;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.BluetoothLeScanner;
@@ -9,8 +13,12 @@ import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
+import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +33,12 @@ import java.util.List;
 */
 public class Servicio  extends IntentService {
 
+    private NotificationManagerCompat notificationManager;
+    public static final String CANAL1 = "Alertas";
+    public static final String CANAL2 = "Segundo plano";
+    public static final String CANAL3 = "Alertas nodo";
+    private boolean alertaNodo = false;
+    private int contador = 0;
     // ---------------------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------
     private static final String ETIQUETA_LOG = "Dispositivo";
@@ -67,6 +81,10 @@ public class Servicio  extends IntentService {
         Log.d(ETIQUETA_LOG, " ServicioEscucharBeacons.onDestroy() " );
 
         this.detenerBusquedaDispositivosBTLE();
+        notificationManager.cancel(1);
+        notificationManager.cancel(2);
+        notificationManager.cancel(3);
+        notificationManager.cancel(4);
 
         this.parar(); // posiblemente no haga falta, si stopService() ya se carga el servicio
     }
@@ -77,6 +95,44 @@ public class Servicio  extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         inicializarServicio(intent);
+        notificationManager = NotificationManagerCompat.from(this);
+        // Se crean los canales de notificación
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel canal1 = new NotificationChannel(
+                    CANAL1,
+                    "Canal alertas",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            canal1.setDescription("En este canal se muestran las alertas que recibe el dispostivo");
+
+            NotificationChannel canal2 = new NotificationChannel(
+                    CANAL2,
+                    "Canal aviso segundo plano",
+                    NotificationManager.IMPORTANCE_LOW
+            );
+            canal2.setDescription("Este canal se usa para mostrar si el servicio esta activo o no");
+
+            NotificationChannel canal3 = new NotificationChannel(
+                    CANAL3,
+                    "Canal aviso estado del nodo",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            canal3.setDescription("Este canal se usa para gestionar los mensajes del nodo");
+
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(canal1);
+            manager.createNotificationChannel(canal2);
+            manager.createNotificationChannel(canal3);
+        }
+
+        Notification notification = new NotificationCompat.Builder(this, CANAL2)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Servicio en segundo plano")
+                .setContentText("Servicio en segundo plano activo")
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .build();
+
+        notificationManager.notify(2, notification);
 
         try {
 
@@ -172,6 +228,30 @@ public class Servicio  extends IntentService {
                     texto = Integer.toString(Utilidades.bytesToInt(tib.getMinor()));
                     valorCO2 = Float.parseFloat(texto);
 
+                    // Aqui van los limites oficiales, si hay baremos tambien se pueden incluir introduciendo la cercania
+                    if (valorCO > 10){
+                        alertaValor("CO", "por encima");
+                    }
+                    else if (valorCO > 8){
+                        alertaValor("CO", "muy cerca");
+                    }
+
+                    if (valorCO2 > 30){
+                        alertaValor("CO2", "por encima");
+                    }
+                    else if (valorCO2 > 28){
+                        alertaValor("CO2", "muy cerca");
+                    }
+                    else if (valorCO2 > 25){
+                        alertaValor("CO2", "cerca");
+                    }
+
+                    // Aqui las lecturas erroneas, si hay alguna no guardamos la medida
+                    if (valorCO < 0 || valorCO2 < 0){
+                        alertaNodoLecturaErronea();
+                        return;
+                    }
+
                     Medicion medicionCO2 = new Medicion(valorCO2, MainActivity.getLatitud(), MainActivity.getLongitud(), date, "CO");
                     Medicion medicionCO = new Medicion(valorCO, MainActivity.getLatitud(), MainActivity.getLongitud(), date, "CO2");
 
@@ -181,6 +261,13 @@ public class Servicio  extends IntentService {
                     // Las añadimos a MainActivity
                     MainActivity.getInstance().actualizarUltimaMedicionCOCO2(medicionCO, medicionCO2);
 
+                    // Distancia del RSSI
+                    int rssi = resultado.getRssi();
+                    calcularDistancia(rssi);
+
+                    contador = 0;
+                    alertaNodo = false;
+                    notificationManager.cancel(3);
                 }
                 // Si lo hemos encontrado y su UUID es EPSG-GTIO3YTEMP recibiremos en el major el valor del O3 y en el minor la Temperatura
                 if (Utilidades.bytesToString(tib.getUUID()).equals("EPSG-GTIO3YTEMP-")){
@@ -202,6 +289,28 @@ public class Servicio  extends IntentService {
                     texto = Integer.toString(Utilidades.bytesToInt(tib.getMinor()));
                     valorTemperatura = Float.parseFloat(texto);
 
+                    // Aqui van los limites oficiales, si hay baremos tambien se pueden incluir introduciendo la cercania
+                    if (valorO3 > 180){
+                        alertaValor("O3", "muy por encima");
+                    }
+                    else if (valorO3 > 120){
+                        alertaValor("O3", "por encima");
+                    }
+                    else if (valorO3 > 100){
+                        alertaValor("O3", "cerca");
+                    }
+
+                    if (valorTemperatura > 30){
+                        alertaValor("Temperatura", "cerca");
+                    }
+
+                    // Aqui las lecturas erroneas
+                    if (valorO3 < 0 || valorTemperatura < 0){
+                        alertaNodoLecturaErronea();
+                        return;
+                    }
+
+
                     Medicion medicionO3 = new Medicion(valorO3, MainActivity.getLatitud(), MainActivity.getLongitud(), date, "O3");
                     Medicion medicionTemperatura = new Medicion(valorTemperatura, MainActivity.getLatitud(), MainActivity.getLongitud(), date, "Temperatura");
 
@@ -211,10 +320,34 @@ public class Servicio  extends IntentService {
                     // Las añadimos a MainActivity
                     MainActivity.getInstance().actualizarUltimaMedicionO3Temperatura(medicionO3, medicionTemperatura);
 
+                    // Distancia del RSSI
+                    int rssi = resultado.getRssi();
+                    calcularDistancia(rssi);
+                    contador = 0;
+                    alertaNodo = false;
+                    notificationManager.cancel(3);
                 }
-
+                else {
+                    // Si no hemos recibido beacons de nuestro sensor en 1 minuto aparece una alerta
+                    contador +=1;
+                    if (contador > 60 && alertaNodo == false){
+                        alertaNodo();
+                    }
+                }
             }
 
+            public void calcularDistancia(int rssi){
+                Log.e("Test", rssi +"");
+                if (rssi >= -55){
+                    MainActivity.getInstance().actualizarRSSI("Cerca");
+                }
+                else if (rssi > -70){
+                    MainActivity.getInstance().actualizarRSSI("Proximo");
+                }
+                else if (rssi >= -70){
+                    MainActivity.getInstance().actualizarRSSI("Lejos");
+                }
+            }
             @Override
             public void onBatchScanResults(List<ScanResult> results) {
                 super.onBatchScanResults(results);
@@ -257,6 +390,56 @@ public class Servicio  extends IntentService {
         this.callbackDelEscaneo = null;
 
     } // ()
+
+    private void alertaValor(String tipo, String problema){
+
+        Notification notification = new NotificationCompat.Builder(this, CANAL1)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Alerta " + tipo)
+                .setContentText("El gas " + tipo + " esta " + problema + " de los limites oficiales")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+
+        notificationManager.notify(1, notification);
+/*
+        NotificationCompat.Builder notificacion = new NotificationCompat.Builder(this, CANAL_ID)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("Alerta, el gas " + tipo + " ha superado el limite")
+                        .setContentText("El gas " + tipo + " esta " + problema + " de las medidas oficiales")
+                        .setPriority(NotificationCompat.PRIORITY_HIGH);
+        PendingIntent intencionPendiente = PendingIntent.getActivity(
+                this, 0, new Intent(this, MainActivity.class), 0);
+        notificacion.setContentIntent(intencionPendiente);
+        notificationManager.notify(NOTIFICACION_ID, notificacion.build());
+
+ */
+    }
+
+    private void alertaNodo(){
+
+        Notification notification = new NotificationCompat.Builder(this, CANAL3)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Alerta nodo")
+                .setContentText("El nodo parece estar desconectado o fuera del alcance ")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+
+        notificationManager.notify(3, notification);
+        alertaNodo = true;
+    }
+
+    private void alertaNodoLecturaErronea(){
+        Notification notification = new NotificationCompat.Builder(this, CANAL3)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Alerta nodo")
+                .setContentText("El nodo parece tener problemas, lectura erronea")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+        notificationManager.notify(4, notification);
+    }
 
     private void mostrarInformacionDispositivoBTLE( ScanResult resultado ) {
 

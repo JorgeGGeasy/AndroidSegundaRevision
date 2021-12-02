@@ -39,9 +39,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private TextView ultimaMedidaTextoCO2;
     private TextView ultimaMedidaTextoO3;
     private TextView ultimaMedidaTextoTemperatura;
+    private TextView distancia;
+    private TextView jornadaCO;
+    private TextView jornadaCO2;
+    private TextView jornadaO3;
+    private TextView jornadaTemperatura;
+    private TextView resultadoJornada;
+
     private Button arrancar;
     private Button detener;
+    private Button jornada;
 
+    private  Logica logica = new Logica();
 
     protected LocationManager locationManager;
 
@@ -63,6 +72,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         ultimaMedidaTextoCO2 = findViewById(R.id.ultimaMedicionCO2);
         ultimaMedidaTextoO3 = findViewById(R.id.ultimaMedicionO3);
         ultimaMedidaTextoTemperatura = findViewById(R.id.ultimaMedicionTemperatura);
+        distancia = findViewById(R.id.distancia);
+        jornadaCO = findViewById(R.id.jornadaCO);
+        jornadaCO2 = findViewById(R.id.jornadaCO2);
+        jornadaO3 = findViewById(R.id.jornadaCO3);
+        jornadaTemperatura = findViewById(R.id.jornadaTemperatura);
+        resultadoJornada = findViewById(R.id.resultadoJornada);
 
         detener = findViewById(R.id.detener);
         detener.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +95,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });
         arrancar.setClickable(false);
         arrancar.setBackgroundColor(0xFF1F7004);
+
+        jornada = findViewById(R.id.jornada);
+        jornada.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                logica.recibirJornada();
+            }
+        });
 
         // Arrancamos el servicio
         startService(new Intent(MainActivity.this, Servicio.class));
@@ -127,6 +149,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         ultimaMedidaTextoTemperatura.setText(Double.toString(medicionTemp.getValor()));
     }
 
+    public void actualizarJornada(int CO, int CO2, int O3, int Temperatura, String resultado){
+        jornadaCO.setText(Integer.toString(CO));
+        jornadaCO2.setText(Integer.toString(CO2));
+        jornadaO3.setText(Integer.toString(O3));
+        jornadaTemperatura.setText(Integer.toString(Temperatura));
+        resultadoJornada.setText(resultado);
+    }
+
+    public void actualizarRSSI(String resultado){
+        distancia.setText(resultado);
+    }
 
     // Detiene el servicio en segundo plano
     // -> detenerServicio() ->

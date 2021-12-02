@@ -7,6 +7,87 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/ultimaMedicionCO3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Aún no hay valores"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/ultimaMedicionCO2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/ultimaMedicionO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Aún no hay valores"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/ultimaMedicionTemperatura"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/ultimaMedicionCO"
+        app:layout_constraintTop_toBottomOf="@+id/CO" />
+
+    <TextView
+        android:id="@+id/ultimaMedicionTemperatura2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Aún no hay valores"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/ultimaMedicionCO2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ultimaMedicionO3"
+        app:layout_constraintTop_toBottomOf="@+id/CO2" />
+
+    <TextView
+        android:id="@+id/ultimaMedicionCO4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Aún no hay valores"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ultimaMedicionCO"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/CO3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="CO"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/ultimaMedicionCO"
+        app:layout_constraintStart_toStartOf="@+id/ultimaMedicionCO"
+        app:layout_constraintTop_toBottomOf="@+id/ultimaMedicionCO" />
+
+    <TextView
+        android:id="@+id/CO4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="CO2"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/ultimaMedicionCO2"
+        app:layout_constraintStart_toStartOf="@+id/ultimaMedicionCO2"
+        app:layout_constraintTop_toBottomOf="@+id/ultimaMedicionCO2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Los valores se muestran bajo"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/ultimaMedicionCO"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,34 +172,34 @@
         android:id="@+id/arrancar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
         android:padding="10dp"
         android:text="Arrancar el servicio"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/detener"
         app:layout_constraintEnd_toStartOf="@id/detener"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/detener" />
 
     <Button
         android:id="@+id/detener"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="8dp"
         android:padding="10dp"
         android:text="Detener el servicio"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/arrancar" />
+        app:layout_constraintStart_toEndOf="@+id/arrancar"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="16dp"
         android:text="Buscando dispositivo Jorge Grau Giannakakis, GTI-3A "
-        app:layout_constraintBottom_toTopOf="@+id/arrancar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/distancia" />
 
     <TextView
         android:id="@+id/O3"
@@ -141,5 +222,127 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/ultimaMedicionTemperatura"
         app:layout_constraintTop_toBottomOf="@+id/ultimaMedicionTemperatura" />
+
+    <TextView
+        android:id="@+id/distancia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Calculando"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Distancia hasta el nodo sensor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resultadoJornada" />
+
+    <Button
+        android:id="@+id/jornada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Calcular media gases respirados este dia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/O3" />
+
+    <TextView
+        android:id="@+id/resultadoJornada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Recomendacion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/jornadaTemperaturaTipo" />
+
+    <TextView
+        android:id="@+id/jornadaCO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aún no hay valores"
+        app:layout_constraintEnd_toStartOf="@+id/jornadaCO2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/jornadaCO2" />
+
+    <TextView
+        android:id="@+id/jornadaCO2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Aún no hay valores"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/jornadaCO"
+        app:layout_constraintTop_toBottomOf="@+id/jornada" />
+
+    <TextView
+        android:id="@+id/jornadaCOTipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CO"
+        app:layout_constraintEnd_toStartOf="@id/jornadaCO2Tipo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/jornadaCO2Tipo" />
+
+    <TextView
+        android:id="@+id/jornadaCO2Tipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CO2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/jornadaCOTipo"
+        app:layout_constraintTop_toBottomOf="@+id/jornadaCO2" />
+
+    <TextView
+        android:id="@+id/jornadaCO3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aún no hay valores"
+        app:layout_constraintEnd_toStartOf="@+id/jornadaTemperatura"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/jornadaTemperatura" />
+
+    <TextView
+        android:id="@+id/jornadaTemperatura"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Aún no hay valores"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/jornadaCO3"
+        app:layout_constraintTop_toBottomOf="@id/jornadaCO2Tipo" />
+
+    <TextView
+        android:id="@+id/jornadaO3Tipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="O3"
+        app:layout_constraintEnd_toStartOf="@id/jornadaTemperaturaTipo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/jornadaTemperaturaTipo" />
+
+    <TextView
+        android:id="@+id/jornadaTemperaturaTipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temperatura"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/jornadaO3Tipo"
+        app:layout_constraintTop_toBottomOf="@+id/jornadaTemperatura" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
